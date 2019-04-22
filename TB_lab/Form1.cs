@@ -18,6 +18,48 @@ namespace TBLab
             InitializeComponent();
         }
 
+        private double intpFR(double z1, double z2)
+        {
+            double a = Convert.ToDouble(textBox2.Text);
+            double kor = -1.0 * Math.Sqrt(Math.Sqrt(2.0));
+            double acos = Math.Acos(1.0 - a / 2.0) / a;
+
+            if (z2 <= kor)
+            {
+                return 0.0;
+            }
+            else if (z2 <= 0.0)
+            {
+                if (z1 <= kor)
+                {
+                    return -0.25 * (z2 * z2 * z2 * z2 - 2.0);
+                }
+                else
+                {
+                    return -0.25 * (z2 * z2 * z2 * z2 - z1 * z1 * z1 * z1);
+                }
+            }
+            else if (z2 <= acos)
+            {
+                if (z1 <= 0.0)
+                {
+                    return ((0.25 * z1 * z1 * z1 * z1) + ((-1.0 / a) * (Math.Cos(a * z2) - 1.0)));
+                }
+                else
+                {
+                    return ((-1.0 / a) * (Math.Cos(a * z2) - Math.Cos(a * z1)));
+                }
+            }
+            else if (z1 <= acos)
+            {
+                return ((-1.0 / a) * ((1.0 - 0.5 * a) - Math.Cos(a * z1)));
+            }
+            else
+            {
+                return 0.0;
+            }
+        }
+
         private double FR(double x)
         {
             double a = Convert.ToDouble(textBox2.Text);
@@ -141,14 +183,47 @@ namespace TBLab
 
             double[] gran = new double[k];
 
-            for (int i = 0; i < k - 1; i++)
+            if (!checkBox1.Checked)
             {
-                gran[i] = Convert.ToDouble(dataGridView4.Rows[i].Cells[0].Value);
+                for (int i = 0; i < k - 1; i++)
+                {
+                    gran[i] = Convert.ToDouble(dataGridView4.Rows[i].Cells[0].Value);
+                }
+
+                gran[k - 1] = b0;
             }
+            else
+            {
+                h = (b0 - a0) / (double)k;
+
+                for (int j = 0; j < k - 1; j++)
+                {
+                    gran[j] = a0 + (j + 1) * h;
+
+                    dataGridView4.Rows[j].Cells[0].Value = gran[j];
+                }
+
+                gran[k - 1] = b0;
+            }
+
+            dataGridView3.Rows.Clear();
 
             double ddd = p.gistogram(gran, dataGridView3, zedGraphControl2, pFR, n);
 
             dataGridView2.Rows[0].Cells[9].Value = ddd;
+
+            double r0 = p.teoria(gran, dataGridView4, intpFR, n);
+            double f_ = 1 - FR(r0); // изменить распределение хи квадрат
+            double alpha = Convert.ToDouble(textBox4.Text);
+
+            if (f_ < alpha)
+            {
+                label5.Text = "Решение: отвергаем";
+            }
+            else
+            {
+                label5.Text = "Решение: принимаем";
+            }
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -159,7 +234,7 @@ namespace TBLab
             {
                 int k = Convert.ToInt32(textBox3.Text);
 
-                for (int i = 0; i < k - 2; i++)
+                for (int i = 0; i < k - 1; i++)
                 {
                     dataGridView4.Rows.Add();
                 }

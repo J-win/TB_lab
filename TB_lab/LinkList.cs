@@ -100,6 +100,49 @@ namespace TBLab
             return b;
         }
 
+        public double teoria(double[] gran, DataGridView dataGridView1, Func<double, double, double> f, int n)
+        {
+            node itl = this.head;
+
+            int i = 0;
+            int num = 0;
+
+            double x = itl.data;
+            double a = x;
+            double b = x;
+            double q, r = 0.0;
+
+            while (itl != null)
+            {
+                x = itl.data;
+
+                if ((x < gran[i]) && (itl.next != null))
+                {
+                    num++;
+                    itl = itl.next;
+                }
+                else
+                {
+                    if (itl.next == null)
+                        itl = itl.next;
+                    b = gran[i];
+
+                    q = f(b, a);
+                    r += ((num - n * q) * (num - n * q)) / (n * q);
+
+                    dataGridView1.Rows[i].Cells[1].Value = q;
+
+                    a = b;
+
+                    num = 0;
+
+                    i++;
+                }
+            }
+
+            return r;
+        }
+
         public double gistogram(double[] gran, DataGridView dataGridView1, ZedGraphControl zed, Func<double, double> f, int n)
         {
             GraphPane panel = zed.GraphPane;
@@ -108,17 +151,6 @@ namespace TBLab
             PointPairList g_list = new PointPairList();
 
             node itl = this.head;
-
-            int len = gran.Length;
-
-            while (itl != null)
-            {
-                gran[len - 1] = itl.data;
-
-                itl = itl.next;
-            }
-
-            itl = this.head;
 
             int i = 0;
             int num = 0;
