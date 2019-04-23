@@ -18,6 +18,54 @@ namespace TBLab
             InitializeComponent();
         }
 
+        private double gamma2(int r)
+        {
+            double f = 1.0;
+            double ff = (double)r / 2.0;
+
+            if (r % 2 == 0)
+            {
+                for (int i = 1; i < r / 2 - 1; i++)
+                    f *= i;
+
+                return f;
+            }
+            else
+            {
+                while (ff != 0.5)
+                {
+                    f *= ff - 1.0;
+                    ff--;
+                }
+
+                f *= Math.Sqrt(Math.PI);
+
+                return f;
+            }
+        }
+
+        private double hi2(double x, int r)
+        {
+            if (x <= 0.0)
+                return 0.0;
+            else
+            {
+                return Math.Pow(2.0, -1 * (double)r / 2.0) * Math.Pow(x, (double)r / 2.0 - 1) * Math.Exp(-1 * x / 2.0) / gamma2(r);
+            }
+        }
+
+        private double inthi(double a, double b, int n, int r)
+        {
+            double sum = 0.0;
+
+            for (int i = 1; i <= n; i++)
+            {
+                sum += (hi2(a + (b - a) * (i - 1) / (double)n, r) + hi2(a + (b - a) * i / (double)n, r)) * (b - a) / ((double)n * 2.0);
+            }
+
+            return sum;
+        }
+
         private double intpFR(double z1, double z2)
         {
             double a = Convert.ToDouble(textBox2.Text);
@@ -213,7 +261,7 @@ namespace TBLab
             dataGridView2.Rows[0].Cells[9].Value = ddd;
 
             double r0 = p.teoria(gran, dataGridView4, intpFR, n);
-            double f_ = 1 - FR(r0); // изменить распределение хи квадрат
+            double f_ = 1 - inthi(0.0, r0, n, k - 1);
             double alpha = Convert.ToDouble(textBox4.Text);
 
             if (f_ < alpha)
