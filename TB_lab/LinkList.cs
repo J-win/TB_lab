@@ -108,7 +108,7 @@ namespace TBLab
             int num = 0;
 
             double x = itl.data;
-            double a = x;
+            double a = -1.0 * Math.Sqrt(Math.Sqrt(2.0)) - 0.000000000000001;
             double b = x;
             double q, r = 0.0;
 
@@ -127,7 +127,7 @@ namespace TBLab
                         itl = itl.next;
                     b = gran[i];
 
-                    q = f(b, a);
+                    q = f(a, b);
                     r += ((num - n * q) * (num - n * q)) / (n * q);
 
                     dataGridView1.Rows[i].Cells[1].Value = q;
@@ -286,7 +286,7 @@ namespace TBLab
             }
         }
 
-        public double artGraph(ZedGraphControl zed, Func<double, double> f, int n)
+        public double artGraph(ZedGraphControl zed, Func<double, double> f, int n, double b1)
         {
             GraphPane panel = zed.GraphPane;
 
@@ -297,12 +297,14 @@ namespace TBLab
 
             int i = 0;
             double d = 0.0;
+            double fff = 0.0;
+            double xx = 0.0;
 
             while (itl != null)
             {
 
                 double ff = f(itl.data);
-                double fff = (double)i / (double)n;
+                fff = (double)i / (double)n;
 
                 if (d < Math.Abs(fff - ff))
                 {
@@ -311,12 +313,17 @@ namespace TBLab
 
                 ff_list.Add(itt.data, fff);
                 ff_list.Add(itl.data, fff);
+                ff_list.Add(PointPairBase.Missing, PointPairBase.Missing);
 
                 i++;
 
                 itt = itl;
+                xx = itl.data;
                 itl = itl.next;
             }
+
+            ff_list.Add(xx, 1.0);
+            ff_list.Add(b1, 1.0);
 
             LineItem Curve1 = panel.AddCurve("F^(x)", ff_list, Color.Blue, SymbolType.None);
 

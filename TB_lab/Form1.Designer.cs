@@ -69,9 +69,10 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column17 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label5 = new System.Windows.Forms.Label();
+            this.Column18 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -240,7 +241,8 @@
             this.Column9,
             this.Column10,
             this.Column15,
-            this.Column16});
+            this.Column16,
+            this.Column18});
             this.dataGridView2.Location = new System.Drawing.Point(12, 268);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
@@ -431,16 +433,6 @@
             this.textBox4.TabIndex = 15;
             this.textBox4.Text = "0,1";
             // 
-            // Column14
-            // 
-            this.Column14.HeaderText = "Правая граница";
-            this.Column14.Name = "Column14";
-            // 
-            // Column17
-            // 
-            this.Column17.HeaderText = "R0";
-            this.Column17.Name = "Column17";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -450,6 +442,21 @@
             this.label5.Size = new System.Drawing.Size(101, 24);
             this.label5.TabIndex = 16;
             this.label5.Text = "Решение: ";
+            // 
+            // Column14
+            // 
+            this.Column14.HeaderText = "Правая граница";
+            this.Column14.Name = "Column14";
+            // 
+            // Column17
+            // 
+            this.Column17.HeaderText = "gj";
+            this.Column17.Name = "Column17";
+            // 
+            // Column18
+            // 
+            this.Column18.HeaderText = "F^-(R0)";
+            this.Column18.Name = "Column18";
             // 
             // Form1
             // 
@@ -531,9 +538,10 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column14;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column17;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column18;
     }
 }
 

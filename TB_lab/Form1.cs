@@ -72,7 +72,7 @@ namespace TBLab
             double kor = -1.0 * Math.Sqrt(Math.Sqrt(2.0));
             double acos = Math.Acos(1.0 - a / 2.0) / a;
 
-            if (z2 <= kor)
+            if (z2 < kor)
             {
                 return 0.0;
             }
@@ -98,7 +98,7 @@ namespace TBLab
                     return ((-1.0 / a) * (Math.Cos(a * z2) - Math.Cos(a * z1)));
                 }
             }
-            else if (z1 <= acos)
+            else if (z1 < acos)
             {
                 return ((-1.0 / a) * ((1.0 - 0.5 * a) - Math.Cos(a * z1)));
             }
@@ -203,22 +203,24 @@ namespace TBLab
             GraphPane panel = zedGraphControl1.GraphPane;
             panel.CurveList.Clear();
 
-            double dd = p.artGraph(zedGraphControl1, FR, n);
+            double b1 = Math.Acos(1.0 - a / 2.0) / a;
+            double dd = p.artGraph(zedGraphControl1, FR, n, b1);
 
             double a0 = p.leftgr();
             double b0 = p.rightgr();
+            double a1 = -1.0 * Math.Sqrt(Math.Sqrt(2.0));
 
-            double h = (b0 - a0) / 1000.0;
+            double h = (b1 - a1) / 1000.0;
 
             PointPairList f_list = new PointPairList();
 
             for (int j = 0; j < 1000; j++)
             {
-                double xx = a0 + j * h;
+                double xx = a1 + j * h;
                 f_list.Add(xx, FR(xx));
             }
 
-            f_list.Add(b0, FR(b0));
+            f_list.Add(b1, FR(b1));
 
             LineItem Curve = panel.AddCurve("F(x)", f_list, Color.Red, SymbolType.None);
 
@@ -238,7 +240,7 @@ namespace TBLab
                     gran[i] = Convert.ToDouble(dataGridView4.Rows[i].Cells[0].Value);
                 }
 
-                gran[k - 1] = b0;
+                gran[k - 1] = b1 + 0.000000000000001;
             }
             else
             {
@@ -251,7 +253,7 @@ namespace TBLab
                     dataGridView4.Rows[j].Cells[0].Value = gran[j];
                 }
 
-                gran[k - 1] = b0;
+                gran[k - 1] = b1 + 0.000000000000001;
             }
 
             dataGridView3.Rows.Clear();
@@ -263,6 +265,9 @@ namespace TBLab
             double r0 = p.teoria(gran, dataGridView4, intpFR, n);
             double f_ = 1 - inthi(0.0, r0, n, k - 1);
             double alpha = Convert.ToDouble(textBox4.Text);
+
+            dataGridView2.Rows[0].Cells[10].Value = f_;
+
 
             if (f_ < alpha)
             {
